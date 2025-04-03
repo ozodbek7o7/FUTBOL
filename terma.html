@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terma Jamoalar Formalari</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family:'Times New Roman', Times, serif }
+        .team { display: inline-block; text-align: center; margin: 20px; cursor: pointer; }
+        .team img { width: 300px; height: auto; border-radius: 10px; }
+        #orderForm { display: none; position:fixed; top: 60%; left: 50%; transform: translate(-50%, -50%);
+                     background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+        input, button { margin: 5px; padding: 10px; width: 80%; }
+        button { background: blue; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Terma Jamoalar Formalari</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Bosh sahifa</a>
+        <a href="klublar.html">Klublar</a>
+        <a href="terma.html">Terma Jamoalar</a>
+        <a href="contact.html">Aloqa</a>
+    </nav> 
+    <div class="team" onclick="showForm('Portugal')">
+        <img src="images/portugal.jpg" alt="Portugal">
+        <p>PORTUGAL</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Brazil')">
+        <img src="images/brazil.jpg" alt="Brazil">
+        <p>BRAZILIYA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('France')">
+        <img src="images/france.jpg" alt="France">
+        <p>FRANSIYA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Croatia')">
+        <img src="images/croatia.jpg" alt="Croatia">
+        <p>XORVATIYA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Germany')">
+        <img src="images/germany.jpg" alt="Germany">
+        <p>GERMANIYA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Argentina')">
+        <img src="images/argentina.jpg" alt="Argentina">
+        <p>ARGENTINA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Spain')">
+        <img src="images/spain.jpg" alt="Spain">
+        <p>ISPANIYA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Italy')">
+        <img src="images/italy.jpg" alt="Italy">
+        <p>ITALIYA</p>
+    </div>
+    
+    <div class="team" onclick="showForm('Belgium')">
+        <img src="images/belgium.jpg" alt="Belgium">
+        <p>BELGIYA</p>
+    </div>
+    
+     
+    <div id="orderForm">
+        <h3>Buyurtma Ma'lumotlari</h3>
+        <input type="hidden" id="teamName">
+        <input type="text" id="name" placeholder="Ismingiz" required>
+        <input type="text" id="surname" placeholder="Familiyangiz" required>
+        <input type="tel" id="phone" placeholder="Telefon raqam" required>
+        <input type="text" id="address" placeholder="Manzilingiz" required>
+        <button onclick="sendToTelegram()">Buyurtma berish</button>
+    </div>
+  
+    
+    <script>
+        function showForm(team) {
+            document.getElementById('teamName').value = team;
+            document.getElementById('orderForm').style.display = 'block';
+        }
+    
+        function sendToTelegram() {
+            let name = document.getElementById('name').value.trim();
+            let surname = document.getElementById('surname').value.trim();
+            let phone = document.getElementById('phone').value.trim();
+            let address = document.getElementById('address').value.trim();
+            let team = document.getElementById('teamName').value;
+    
+            if (name === "" || surname === "" || phone === "" || address === "") {
+                alert("❌ Iltimos, barcha maydonlarni to‘ldiring!");
+                return;
+            }
+    
+            let botToken = "8074671892:AAFrmuT14ms0ECwqv4Qe57E0bWcp4iQD380";
+            let chatId = "5833487732";
+    
+            let message = `📌 **Yangi buyurtma!**\n\n👤 **Ism:** ${name}\n👤 **Familiya:** ${surname}\n📞 **Telefon:** ${phone}\n🏠 **Manzil:** ${address}\n⚽ **Jamoa:** ${team}`;
+    
+            let url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+    
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        alert("✅ Buyurtmangiz qabul qilindi!");
+                        clearForm(); // Maydonlarni tozalash
+                        closeForm(); // Formani yopish
+                    } else {
+                        alert("❌ Xatolik yuz berdi, qayta urinib ko‘ring.");
+                    }
+                })
+                .catch(error => alert("❌ Xatolik yuz berdi: " + error));
+        }
+    
+        function clearForm() {
+            document.getElementById('name').value = "";
+            document.getElementById('surname').value = "";
+            document.getElementById('phone').value = "";
+            document.getElementById('address').value = "";
+            document.getElementById('teamName').value = "";
+        }
+    
+        function closeForm() {
+            document.getElementById('orderForm').style.display = 'none';
+            clearForm(); // Forma yopilganda ham maydonlar tozalanadi
+        }
+    
+        window.onclick = function(event) {
+            let modal = document.getElementById('orderForm');
+            if (event.target == modal) {
+                closeForm();
+            }
+        }
+    </script>
+    <footer>
+        <p>© 2025 Namangan</p>
+    </footer>
+</body>
+</html>
